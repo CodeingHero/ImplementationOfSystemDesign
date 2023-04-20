@@ -123,6 +123,9 @@ namespace SystemDesign.UserManager.Services {
           return new UpdateResult { Result = IdentityResult.Failed(new IdentityError { Description = "User not found." }), User = null };
         }
         //Update Password
+        if(userUpdateInfo.NewPassword != userUpdateInfo.ConfirmPassword) {
+          return new UpdateResult { Result = IdentityResult.Failed(new IdentityError { Description = "Password and confirm password do not match." }), User = user };
+        }
         if (!string.IsNullOrEmpty(userUpdateInfo.NewPassword)) {
           if(await userManager.CheckPasswordAsync(user, userUpdateInfo.PrevPassword) == false) {
             return new UpdateResult { Result = IdentityResult.Failed(new IdentityError { Description = "Invalid password." }) };
@@ -163,6 +166,7 @@ namespace SystemDesign.UserManager.Services {
   public class UserUpdateInfo : UserDetail {
     public string PrevPassword { get; set; }
     public string NewPassword { get; set; }
+    public string ConfirmPassword { get; set; }
   }
 
   public class Tokens {

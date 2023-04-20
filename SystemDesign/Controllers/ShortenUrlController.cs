@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Writers;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using SystemDesign.EF;
@@ -34,18 +35,18 @@ namespace SystemDesign.Controllers {
     /// <param name="url"></param>
     /// <returns></returns>
     [HttpPost]
-    //[Authorize]
+    [Authorize]
     public async Task<IActionResult> CreateUrl(string url) {
       var id = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-      if (id == null)
-        id = "1";
+      //if (id == null)
+      //  id = "1";
       var sUrl = await shortenUrlService.AddNewUrlAsync(long.Parse(id), url);
       if (sUrl == null)
         return BadRequest(new CommonResponse<string>() {
           IsSuccess = false,
           IsError = true,
           Message = "Failed to generate short url.Please try again.",
-          Data = configuration.GetSection("WebSetting").Get<WebSetting>().DomainName + "/" + sUrl.ShortenedUrl,
+          Data = ShortenUrlService.CombineShortenUrl(sUrl.ShortenedUrl, configuration.GetSection("WebSetting").Get<WebSetting>().DomainName),
           Errors = new List<string> { "Failed to generate short url.Please try again later." }
         });
       return Ok(new CommonResponse<ShortenUrlResponse>() {

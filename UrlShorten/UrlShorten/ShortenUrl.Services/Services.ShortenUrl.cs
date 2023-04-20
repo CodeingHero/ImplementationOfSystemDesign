@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualBasic;
+using System.ComponentModel;
 using SystemDesign.EF;
 using SystemDesign.EF.Models;
 using SystemDesign.Utils;
@@ -45,6 +46,14 @@ namespace SystemDesign.ShortenUrl.Services {
       url.ExpirationTime = url.CreationTime?.AddDays(30) ?? DateTime.Now.AddDays(30);
       await ctx.SaveChangesAsync();
       return url;
+    }
+
+    static public string Formaturl() {
+      throw new NotImplementedException();
+    }
+
+    static public string CombineShortenUrl(string url,string domain) {
+      return $"https://{domain}/s/{url}";
     }
 
     public async Task<bool> CheckIfOriUrlExist(long userId, string url)

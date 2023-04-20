@@ -13,6 +13,7 @@ using SystemDesign.ShortenUrl.Services;
 using SystemDesign.UserManager.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("https://localhost:7111");
 
 // Add services to the container.
 var services = builder.Services;
@@ -20,7 +21,6 @@ services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
-
 services.AddCors(options => {
   options.AddPolicy("MyPolicy",
       builder => {
@@ -88,7 +88,7 @@ app.UseStaticFiles();
 //  RequestPath = "",
 //});
 //app.UseMiddleware<AuthExceptionMiddleware>();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 //Use JWT
 app.UseAuthentication();
 //Use Identity

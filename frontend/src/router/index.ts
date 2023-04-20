@@ -4,8 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      //主页有两个个children,默认的是推一个AppLayout，因为在AppLayout里面有个洞(RouterView)
-      //所以用children的形式给这个洞
+      //there are two children in the home page, the default is to push an AppLayout, because there is a hole (RouterView) in the AppLayout
       path: '/',
       name: 'home',
       component: () => import('@/components/Layout/AppLayout.vue'),

@@ -56,6 +56,7 @@ namespace SystemDesign.Controllers {
             UserID = res.Id.ToString(),
             UserName = res.UserName,
             Email = res.Email,
+            NickName = res.NickName,
             Portrait = null
           }
         });

@@ -31,11 +31,7 @@
               <el-input v-model="userInfoForm.newPassword" type="password" autocomplete="off" />
             </el-form-item>
             <el-form-item label="Confirm New">
-              <el-input
-                v-model="userInfoForm.confirmNewPassword"
-                type="password"
-                autocomplete="off"
-              />
+              <el-input v-model="userInfoForm.confirmPassword" type="password" autocomplete="off" />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm">Update</el-button>
@@ -52,12 +48,13 @@ import type { UserInfo, UserUpdateInfo } from '@/apis/userApi';
 import { getUserInfo, updateUserInfo } from '@/apis/userApi';
 import { useRouter } from 'vue-router';
 //setup
+
 const router = useRouter();
 //define type
 type UserInfoForm = Omit<UserInfo, 'portrait'> & {
   prevPassword: string;
   newPassword: string;
-  confirmNewPassword: string;
+  confirmPassword: string;
 };
 //define props
 const userInfoForm = reactive<UserInfoForm>({
@@ -67,7 +64,7 @@ const userInfoForm = reactive<UserInfoForm>({
   nickName: '',
   prevPassword: '',
   newPassword: '',
-  confirmNewPassword: ''
+  confirmPassword: ''
 });
 
 const updateData = computed(() => {
@@ -77,7 +74,8 @@ const updateData = computed(() => {
     userName: userInfoForm.userName,
     email: userInfoForm.email,
     prevPassword: userInfoForm.prevPassword,
-    newPassword: userInfoForm.newPassword
+    newPassword: userInfoForm.newPassword,
+    confirmPassword: userInfoForm.confirmPassword
   } as UserUpdateInfo;
 });
 
@@ -90,6 +88,7 @@ const getUserInfoFromBackend = async () => {
   const data = await getUserInfo()
     .then((res) => {
       console.log(res.data);
+      ElMessage.success('Get User Info Success');
       return res.data;
     })
     .catch((err) => {
@@ -121,11 +120,9 @@ const submitForm = async () => {
     throw new Error('Update Failed');
   }
 };
-
+getUserInfoFromBackend();
 //script setup
-onMounted(() => {
-  getUserInfoFromBackend();
-});
+onMounted(() => {});
 </script>
 
 <style scoped>
