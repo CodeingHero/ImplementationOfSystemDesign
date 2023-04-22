@@ -80,7 +80,7 @@ const onRegister = async () => {
     return res.data.data;
   });
   ElMessage.info('test' + data);
-  tokenStore.saveToken(data.token.accessToken);
+  tokenStore.saveToken(JSON.stringify(data.token));
   isLoading.value = false;
   ElMessage.success('Register success');
   router.push((route.query.redirect as string) || '/');
