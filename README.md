@@ -1,2 +1,2 @@
-# ImplementationSystemDesign
-Implementation of famous course "Grokking the System Design Interview".
+# Implementations of SystemDesign
+Implementations of famous course "Grokking the System Design Interview".
