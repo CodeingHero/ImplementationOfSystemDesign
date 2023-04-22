@@ -40,7 +40,7 @@ const tokenStore = tokenManager();
 const router = useRouter();
 const route = useRoute();
 const form = reactive({
-  userKey: 'jyw',
+  userKey: 'test',
   password: '123456'
 });
 
@@ -54,13 +54,18 @@ const onSubmit = async () => {
   });
 
   // login request
-  const data = await login(form).then((res) => {
-    if (!res.data.isSuccess) {
-      ElMessage.error(res.data.message);
-      throw new Error(res.data.message);
-    }
-    return res.data;
-  });
+  const data = await login(form)
+    .then((res) => {
+      if (!res.data.isSuccess) {
+        ElMessage.error(res.data.message);
+        throw new Error(res.data.message);
+      }
+      return res.data;
+    })
+    .catch((err) => {
+      ElMessage.error('Login failed');
+      throw err;
+    });
 
   console.log(data);
 
@@ -81,8 +86,8 @@ const toRegister = () => {
 //form validations
 const rules = reactive<FormRules>({
   userKey: [
-    { required: true, message: 'Email/User Name/ID は必須です', trigger: 'change' },
-    { min: 3, message: 'Email/User Name/ID は4桁以上です。', trigger: 'change' }
+    { required: true, message: 'User Name/ID は必須です', trigger: 'change' },
+    { min: 3, message: 'User Name/ID は4桁以上です。', trigger: 'change' }
   ],
   password: [
     { required: true, message: 'パスワードは必須です', trigger: 'blur' },

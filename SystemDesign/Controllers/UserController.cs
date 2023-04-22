@@ -86,13 +86,13 @@ namespace SystemDesign.Controllers {
     public async Task<IActionResult> Register(UserRequest userRequest) {
       var res = await userService.CreateNewUserAsync(userRequest.ToUserIdentityDTO());
       if (!res.Result.Succeeded)
-        return BadRequest(new CommonResponse<RegisterResponse> (null) {
+        return BadRequest(new CommonJsonResponse (null) {
           IsSuccess = false,
           IsError = true,
           Message = "Registration failed",
           Errors = res.Result.Errors.Select(err => err.Description).ToList()
         });
-      return Ok(new CommonResponse<RegisterResponse> (res.ToResponse() as RegisterResponse) {
+      return Ok(new CommonJsonResponse (res.ToResponse() as RegisterResponse) {
         IsSuccess = true,
         IsError = false,
         Message = "Registration succeed"

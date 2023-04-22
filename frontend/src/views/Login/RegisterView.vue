@@ -39,11 +39,12 @@
 
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { register } from '@/apis/userApi';
 import { tokenManager } from '@/stores/myToken';
 
 const router = useRouter();
+const route = useRoute();
 const formRef = ref<FormInstance>();
 const tokenStore = tokenManager();
 const isLoading = ref(false);
@@ -53,8 +54,8 @@ const form = reactive({
 });
 const rules = reactive<FormRules>({
   userKey: [
-    { required: true, message: 'Email/User Name/ID は必須です', trigger: 'change' },
-    { min: 3, message: 'Email/User Name/ID は4桁以上です。', trigger: 'change' }
+    { required: true, message: 'User Name は必須です', trigger: 'change' },
+    { min: 3, message: 'User Name は4桁以上です。', trigger: 'change' }
   ],
   password: [
     { required: true, message: 'パスワードは必須です', trigger: 'blur' },
@@ -63,7 +64,7 @@ const rules = reactive<FormRules>({
 });
 
 const onRegister = async () => {
-  ElMessage.info('test');
+  ElMessage.info('Waiting for register...');
   //validate form
   await formRef.value?.validate().catch((err) => {
     ElMessage.error('Valadation failed');
@@ -78,10 +79,11 @@ const onRegister = async () => {
     }
     return res.data.data;
   });
-  tokenStore.saveToken(data.token);
+  ElMessage.info('test' + data);
+  tokenStore.saveToken(data.token.accessToken);
   isLoading.value = false;
   ElMessage.success('Register success');
-  router.push('/home');
+  router.push((route.query.redirect as string) || '/');
 };
 
 const onReturn = () => {

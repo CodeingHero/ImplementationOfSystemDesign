@@ -52,8 +52,8 @@ namespace SystemDesign.ShortenUrl.Services {
       throw new NotImplementedException();
     }
 
-    static public string CombineShortenUrl(string url,string domain) {
-      return $"https://{domain}/s/{url}";
+    static public string CombineShortenUrl(string shortUrl,string domain) {
+      return $"https://{domain}/s/{shortUrl}";
     }
 
     public async Task<bool> CheckIfOriUrlExist(long userId, string url)

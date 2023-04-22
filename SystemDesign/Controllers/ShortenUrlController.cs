@@ -128,7 +128,7 @@ namespace SystemDesign.Controllers {
       var oriUrl = await shortenUrlService.GetOriginalUrl(url);
       if (oriUrl == null)
         return NotFound("Original url not found!");
-      return Redirect("https://"+ oriUrl);
+      return Redirect(oriUrl);
     }
 
     [HttpDelete]

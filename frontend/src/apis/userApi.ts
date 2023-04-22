@@ -20,6 +20,7 @@ type IdentityResponse = {
 export type UserUpdateInfo = Omit<UserInfo, 'portrait'> & {
   prevPassword: string;
   newPassword: string;
+  confirmPassword: string;
 };
 
 // //used for login response
@@ -59,7 +60,7 @@ export const logout = () => {
 //register new user
 
 export const register = (register: LoginInfo) => {
-  return request({
+  return request<CommonResponse<IdentityResponse>>({
     method: 'POST',
     url: '/user/register',
     data: {
@@ -81,7 +82,8 @@ export const updateUserInfo = (userUpdateInfo: UserUpdateInfo) => {
       nickName: userUpdateInfo.nickName,
       portrait: '',
       prevPassword: userUpdateInfo.prevPassword,
-      newPassword: userUpdateInfo.newPassword
+      newPassword: userUpdateInfo.newPassword,
+      confirmPassword: userUpdateInfo.confirmPassword
     }
   });
 };
