@@ -23,7 +23,7 @@ request.interceptors.response.use(
   async (err) => {
     if (err.response.status === 401) {
       // Push route to login page if the response status is 401
-      router.push({ name: 'login' });
+      await router.push({ name: 'login' });
       return;
     }
     return Promise.reject(err);

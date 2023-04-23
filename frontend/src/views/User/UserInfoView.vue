@@ -24,6 +24,7 @@
             <el-form-item label="Email">
               <el-input v-model="userInfoForm.email" />
             </el-form-item>
+            <el-checkbox v-model="isChangePassword" label="Change Password?" size="large" />
             <el-form-item label="Prev Password">
               <el-input v-model="userInfoForm.prevPassword" type="password" autocomplete="off" />
             </el-form-item>
@@ -73,11 +74,13 @@ const updateData = computed(() => {
     nickName: userInfoForm.nickName,
     userName: userInfoForm.userName,
     email: userInfoForm.email,
-    prevPassword: userInfoForm.prevPassword,
-    newPassword: userInfoForm.newPassword,
-    confirmPassword: userInfoForm.confirmPassword
+    prevPassword: isChangePassword ? userInfoForm.prevPassword : '',
+    newPassword: isChangePassword ? userInfoForm.newPassword : '',
+    confirmPassword: isChangePassword ? userInfoForm.confirmPassword : ''
   } as UserUpdateInfo;
 });
+
+const isChangePassword = ref(false);
 
 const labelPosition = ref('top' as 'top' | 'left' | 'right');
 

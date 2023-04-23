@@ -13,7 +13,7 @@ using SystemDesign.ShortenUrl.Services;
 using SystemDesign.UserManager.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("https://localhost:7111");
+builder.WebHost.UseUrls("http://localhost:7111");
 
 // Add services to the container.
 var services = builder.Services;
@@ -80,15 +80,21 @@ if (app.Environment.IsDevelopment()) {
   app.UseSwagger();
   app.UseSwaggerUI();
 }
+app.UseWhen(context => {
+  var res = !(context.Request.Path.StartsWithSegments("/user")
+        || context.Request.Path.StartsWithSegments("/sd")
+        || context.Request.Path.StartsWithSegments("/s")
+        || context.Request.Path.StartsWithSegments("/assets"));
+  return res;
+}, branch => {
+  branch.Use((context,next) => {
+    context.Request.Path = new PathString("/");
+    Console.WriteLine("Path changed to:" + context.Request.Path.Value);
+    return next();
+  });
+});
 app.UseDefaultFiles();
 app.UseStaticFiles();
-//app.UseStaticFiles(new StaticFileOptions {
-//  FileProvider = new PhysicalFileProvider(
-//  Path.Combine(builder.Environment.ContentRootPath, "./wwwroot")),
-//  RequestPath = "",
-//});
-//app.UseMiddleware<AuthExceptionMiddleware>();
-//app.UseHttpsRedirection();
 //Use JWT
 app.UseAuthentication();
 //Use Identity
