@@ -31,8 +31,6 @@ namespace SystemDesign.UserManager.Services {
     public async Task<string> GetAccessTokenAsync(SDUser user, JwtOption jwtOption) {
       using (var scope = serviceProvider.CreateScope()) {
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<SDUser>>();
-        var signInManager = scope.ServiceProvider.GetRequiredService<SignInManager<SDUser>>();
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<UserRole>>();
         //Create Claim
         var claims = new List<Claim> {
           new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -51,8 +49,6 @@ namespace SystemDesign.UserManager.Services {
     public async Task<string> GetRefreshTokenAsync(SDUser user, JwtOption jwtOption) {
       using (var scope = serviceProvider.CreateScope()) {
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<SDUser>>();
-        var signInManager = scope.ServiceProvider.GetRequiredService<SignInManager<SDUser>>();
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<UserRole>>();
         //Create Claim
         var claims = new List<Claim> {
           new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),

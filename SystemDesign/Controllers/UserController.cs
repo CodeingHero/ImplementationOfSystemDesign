@@ -170,13 +170,6 @@ namespace SystemDesign.Controllers {
 
 namespace SystemDesign.Models {
   public static partial class ConvertExtensions {
-    //public static LoginResponse ToResponse(this LoginResult @this) {
-    //  return new LoginResponse {
-    //    UserID = @this.User?.Id,
-    //    Email = @this.User.Email,
-    //    UserName = @this.User.UserName,
-    //  };
-    //}
     public static IdentityResponseBase ToResponse(this UserIdentifyResultBase @this) {
       if(@this.GetType() == typeof(LoginResult)) { 
         return new LoginResponse {

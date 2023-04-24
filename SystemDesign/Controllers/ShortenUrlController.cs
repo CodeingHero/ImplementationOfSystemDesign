@@ -38,22 +38,20 @@ namespace SystemDesign.Controllers {
     [Authorize]
     public async Task<IActionResult> CreateUrl(string url) {
       var id = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-      //if (id == null)
-      //  id = "1";
       var sUrl = await shortenUrlService.AddNewUrlAsync(long.Parse(id), url);
       if (sUrl == null)
         return BadRequest(new CommonResponse<string>() {
           IsSuccess = false,
           IsError = true,
           Message = "Failed to generate short url.Please try again.",
-          Data = ShortenUrlService.CombineShortenUrl(sUrl.ShortenedUrl, configuration.GetSection("WebSetting").Get<WebSetting>().DomainName),
+          Data = ShortenUrlService.CombineShortenUrl(sUrl.ShortenedUrl, GetDomain()),
           Errors = new List<string> { "Failed to generate short url.Please try again later." }
         });
       return Ok(new CommonResponse<ShortenUrlResponse>() {
         IsSuccess = true,
         IsError = false,
         Message = "Success",
-        Data = sUrl.ToResponse() 
+        Data = sUrl.ToResponse(GetDomain()) 
       });
     }
 
@@ -68,7 +66,7 @@ namespace SystemDesign.Controllers {
         IsSuccess = urls.Count > 0,
         IsError = false,
         Message = urls.Count > 0 ? "Success" : "No data found",
-        Data = urls.Select(item => item.ToResponse()).ToList(),
+        Data = urls.Select(item => item.ToResponse(GetDomain())).ToList(),
       };
       return Ok(res);
     }
@@ -89,7 +87,7 @@ namespace SystemDesign.Controllers {
         IsSuccess = true,
         IsError = false,
         Message = "Success",
-        Data = url.ToResponse(),
+        Data = url.ToResponse(GetDomain()),
       });
     }
 
@@ -117,7 +115,7 @@ namespace SystemDesign.Controllers {
         IsSuccess = true,
         IsError = false,
         Message = "Success",
-        Data = url.ToResponse(),
+        Data = url.ToResponse(GetDomain()),
       });
     }
 
@@ -143,16 +141,20 @@ namespace SystemDesign.Controllers {
         return BadRequest($"Remove {Url} failed.Please try again later");
       return Ok($"{sUrl} has been deleted permanently");
     }
+
+    private string GetDomain() {
+      return configuration.GetSection("WebSetting").Get<WebSetting>().DomainName;
+    }
   }
 }
 namespace SystemDesign.Responses {
   public static partial class ConvertExtensions {
-    public static ShortenUrlResponse ToResponse(this ShortenUrlEntity @this) {
+    public static ShortenUrlResponse ToResponse(this ShortenUrlEntity @this,string domain) {
       return new ShortenUrlResponse {
         UserID = @this.OwnerUser.Id.ToString(),
         UrlKey = @this.UrlKey.ToString(),
         OriginalUrl =  @this.OriginalUrl,
-        ShortenedUrl = "/s/" + @this.ShortenedUrl,
+        ShortenedUrl = $"https://{domain}/s/{@this.ShortenedUrl}",
         CreationTime = @this.CreationTime,
         ExpirationTime = @this.ExpirationTime,
       };

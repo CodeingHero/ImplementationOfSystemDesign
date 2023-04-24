@@ -19,5 +19,11 @@ namespace SystemDesign.Controllers {
     public async Task<IActionResult> GetIntroduction() {
       return Ok(new CommonJsonResponse(await indexService.GetIndroductionAsync()));
     }
+
+    [HttpGet]
+    [Route("~/sd/[controller]/About")]
+    public async Task<IActionResult> GetAbout() {
+      return Ok(new CommonJsonResponse("About"));
+    }
   }
 }
