@@ -42,10 +42,9 @@ import {
   addExpirationTime,
   getAllUrls
 } from './EditScript';
-import { dateToTableFormat, dateStringFormat } from '@/utils/formatter';
-import { toNestedArr } from 'element-plus/es/components/calendar/src/date-table';
 import type { FormInstance } from 'element-plus';
 const addDays = ref(0);
+let baseExpireTime = '';
 const onSubmit = () => {
   addExpirationTime(addDays.value);
   isEditorVisible.value = false;
@@ -53,8 +52,7 @@ const onSubmit = () => {
 };
 
 const onAddDaysChange = (cur: number | undefined, prev: any | undefined) => {
-  console.log(cur);
-  const newDate = new Date(formattedUrl.value.expirationTime);
+  const newDate = new Date(baseExpireTime);
   newDate.setTime(newDate.getTime() + cur! * 24 * 60 * 60 * 1000);
   formattedUrl.value = {
     ...formattedUrl.value,
@@ -64,10 +62,13 @@ const onAddDaysChange = (cur: number | undefined, prev: any | undefined) => {
 };
 const frmEditDlg = ref<FormInstance>();
 
-const showEditor_ = (urlKey = '') => {
+const showEditor_ = async (urlKey = '') => {
   //frmEditDlg.value?.resetFields();
   addDays.value = 0;
-  showEditor(urlKey);
+  await showEditor(urlKey);
+  baseExpireTime = formattedUrl.value.expirationTime;
+  console.log(formattedUrl.value.creationTime);
+  console.log(formattedUrl.value.expirationTime);
 };
 defineExpose({
   showEditor_

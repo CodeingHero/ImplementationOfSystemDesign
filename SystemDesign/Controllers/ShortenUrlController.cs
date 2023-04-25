@@ -126,6 +126,8 @@ namespace SystemDesign.Controllers {
       var oriUrl = await shortenUrlService.GetOriginalUrl(url);
       if (oriUrl == null)
         return NotFound("Original url not found!");
+      if(!oriUrl.ToUpper().StartsWith("HTTP"))
+        oriUrl = "https://" + oriUrl;
       return Redirect(oriUrl);
     }
 

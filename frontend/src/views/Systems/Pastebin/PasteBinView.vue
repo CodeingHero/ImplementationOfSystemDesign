@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <p>[TODO]PasteBin</p>
+  </div>
 </template>
 
 <script setup lang="ts"></script>

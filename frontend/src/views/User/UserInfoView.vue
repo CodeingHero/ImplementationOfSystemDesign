@@ -26,13 +26,28 @@
             </el-form-item>
             <el-checkbox v-model="isChangePassword" label="Change Password?" size="large" />
             <el-form-item label="Prev Password">
-              <el-input v-model="userInfoForm.prevPassword" type="password" autocomplete="off" />
+              <el-input
+                v-model="userInfoForm.prevPassword"
+                type="password"
+                autocomplete="off"
+                :disabled="isDisablePasswordChange"
+              />
             </el-form-item>
             <el-form-item label="New Password">
-              <el-input v-model="userInfoForm.newPassword" type="password" autocomplete="off" />
+              <el-input
+                v-model="userInfoForm.newPassword"
+                type="password"
+                autocomplete="off"
+                :disabled="isDisablePasswordChange"
+              />
             </el-form-item>
             <el-form-item label="Confirm New">
-              <el-input v-model="userInfoForm.confirmPassword" type="password" autocomplete="off" />
+              <el-input
+                v-model="userInfoForm.confirmPassword"
+                type="password"
+                autocomplete="off"
+                :disabled="isDisablePasswordChange"
+              />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="submitForm">Update</el-button>
@@ -81,7 +96,15 @@ const updateData = computed(() => {
 });
 
 const isChangePassword = ref(false);
-
+console.log('test' + isChangePassword.value);
+const isDisablePasswordChange = computed<boolean>({
+  get() {
+    return !isChangePassword.value;
+  },
+  set(value: boolean) {
+    isChangePassword.value = !value;
+  }
+});
 const labelPosition = ref('top' as 'top' | 'left' | 'right');
 
 //define methods
@@ -125,7 +148,9 @@ const submitForm = async () => {
 };
 getUserInfoFromBackend();
 //script setup
-onMounted(() => {});
+onMounted(() => {
+  isChangePassword.value = false;
+});
 </script>
 
 <style scoped>
